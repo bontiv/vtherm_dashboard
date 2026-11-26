@@ -33,7 +33,10 @@ that your plugin defines. The dashboard creates it and sets its properties. The 
 (`top_tab`, `tab_page`, `global_page`, `general_config`, `thermostat_config`) need a `title`, which is a key of your
 [translation catalogs](internationalization.md), and can have an `icon` (`mdi:...`).
 
-A configuration component never writes the configuration itself. It reads `values` (and `centralValues` for a thermostat),
+A configuration component of a native plugin (an identifier that starts with `core`) never writes the configuration itself. A component
+of another plugin is free to write its data by its own means (a service of Home Assistant, a command of your plugin, the entities of your
+plugin), for example when its settings are not in the configuration entry of the thermostat; see
+[A tab that writes by itself](plugin-development.md#a-tab-that-writes-by-itself). The component reads `values` (and `centralValues` for a thermostat),
 shows the `errors` of its fields, and calls `proposeChanges` to change the draft. The dashboard saves the draft when the user
 saves. The save actions are at the foot of the card of the section: a contribution that draws them itself from `draft` declares
 `save_actions: "component"`; otherwise (`"dashboard"`, the default) the dashboard draws them in a card under the component. Only
@@ -129,8 +132,10 @@ The native widgets follow these rules, and a plugin that follows them looks like
 - **Theme and phone.** Only the variables of the theme of Home Assistant, no color of your own. Nothing wider than the card: a widget
   stays readable at 360 px without a horizontal scroll.
 - **Cost.** Draw again only when an entity that the widget reads changes, and read a history only once the card is visible.
-- **Display only.** A widget shows how Versatile Thermostat works; it does not change it. No widget calls a service, and none draws a
-  command (mode, preset, lock, window bypass, central mode, learning).
+- **Display only, for the native widgets.** A widget of a native plugin (an identifier that starts with `core`) shows how Versatile
+  Thermostat works; it does not change it. It calls no service, and it draws no command (mode, preset, lock, window bypass, central
+  mode, learning). A widget of another plugin can call the services of Home Assistant and draw commands: the dashboard does not stop
+  it. It then runs with the rights of the user, so name what it changes and keep the confirmation of a risky action in the widget.
 
 ## The menus
 

@@ -98,7 +98,8 @@ do the same thing. See [the fields of the configuration](configuration.md#the-fi
 ## The widgets
 
 The overview of the Dashboard tab and the overview of a thermostat show widgets: cards that show how Versatile Thermostat is working
-(measures, states, alerts). They only show: no widget changes a mode, a preset or a setting.
+(measures, states, alerts). The widgets of the dashboard only show: none of them changes a mode, a preset or a setting. A widget
+that a plugin adds can have buttons that change something; read what the plugin says before you use them.
 
 - The cards are on a grid that uses the width of the screen. A widget can be wider (up to the whole row) or higher than the others;
   on a phone, every card takes the whole width. The cards keep the order that the plugins gave, which is also the order of the

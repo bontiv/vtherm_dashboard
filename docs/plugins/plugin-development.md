@@ -596,6 +596,19 @@ export class MyPluginSection extends HTMLElement {
 ```
 <!-- /example -->
 
+### A tab that writes by itself
+The draft and `save_config` write the configuration entry of the thermostat. The tabs of the native plugins use them, and never write
+by themselves. A tab of another plugin is free: when its settings live elsewhere, for example in the entities of your plugin, its
+component can call `hass.callService` or a command of your plugin without the draft. The dashboard does not stop it.
+
+What the dashboard does not do for such a tab:
+- The draft does not know the write. `draft.dirty` stays false for it, **Discard** does not undo it, and **Save** does not save it.
+- The errors are yours: show the answer of the service in the component, and keep the value that the user sees equal to the one that
+  was written.
+- The write happens at once, with the rights of the user. Ask for a confirmation before a write that is hard to undo.
+
+A tab can use both: `proposeChanges` for the values of the configuration entry, and its own write for the rest.
+
 ## 4. Write the translations
 Every text comes from a catalog. The English catalog is required and gives the keys, so an unknown key does not compile. The French
 and German catalogs can be partial: a missing key is shown in English. Add a language by adding an entry to the second argument of

@@ -8,6 +8,18 @@ WebSocket command that lists the plugins) and what to change in a plugin to foll
 
 ## [Unreleased]
 
+### Changed
+- Only the widgets and the configuration tabs of the native plugins are limited to what the dashboard saves or shows. A widget of
+  another plugin can call the services of Home Assistant and draw commands, and a configuration tab of another plugin can write its own
+  data (for example the entities of its plugin) without going through the draft. The native widgets and tabs are checked by a test
+  (`frontend/test/plugin-write-access.test.ts`).
+
+### For plugin authors
+- A widget (`global_widget`, `thermostat_widget`) can call `hass.callService` and draw commands, and a component of `general_config`
+  or `thermostat_config` can write by itself, without the draft and without `save_config`. The dashboard does not stop them and does not
+  count their writes in the draft: a tab that writes by itself shows its own state, its own error and its own undo. Nothing changes for
+  a plugin that does not write.
+
 ## [0.1.0-beta4]
 The fourth beta.
 

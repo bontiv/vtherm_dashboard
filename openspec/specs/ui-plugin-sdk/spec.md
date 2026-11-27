@@ -65,7 +65,7 @@ Les types du package SHALL couvrir les sept hooks. Une contribution de navigatio
 - **THEN** la compilation TypeScript échoue
 
 ### Requirement: Contexte des composants de configuration
-Un composant des hooks `general_config` et `thermostat_config` SHALL recevoir `hass`, les valeurs courantes de la configuration éditée, celles de la configuration centrale pour `thermostat_config`, les erreurs de validation de ses champs, un moyen de proposer des modifications du brouillon et l'état du brouillon avec ses commandes (modifié ou non, enregistrement en cours, enregistrer, annuler). Il ne SHALL pas écrire lui-même dans la configuration de Home Assistant : l'enregistrement est assuré par le dashboard.
+Un composant des hooks `general_config` et `thermostat_config` SHALL recevoir `hass`, les valeurs courantes de la configuration éditée, celles de la configuration centrale pour `thermostat_config`, les erreurs de validation de ses champs, un moyen de proposer des modifications du brouillon et l'état du brouillon avec ses commandes (modifié ou non, enregistrement en cours, enregistrer, annuler). Un composant contribué par un plugin natif (identifiant de plugin commençant par `core`) ne SHALL pas écrire lui-même dans la configuration de Home Assistant : l'enregistrement est assuré par le dashboard. Un composant contribué par un autre plugin SHALL pouvoir écrire ses données par ses propres moyens (service de Home Assistant, commande de son plugin, entités) ; le dashboard ne SHALL pas l'en empêcher.
 
 #### Scenario: Modification du brouillon
 - **WHEN** un composant propose la modification d'un champ
@@ -86,6 +86,14 @@ Un composant des hooks `general_config` et `thermostat_config` SHALL recevoir `h
 #### Scenario: Enregistrement demandé par le composant
 - **WHEN** un composant appelle la commande d'enregistrement
 - **THEN** le dashboard enregistre tout le brouillon de la configuration et le composant reçoit le résultat (réussi, refusé ou partiel) pour l'afficher sur son bouton
+
+#### Scenario: Composant natif sans écriture directe
+- **WHEN** un composant de configuration d'un plugin natif modifie une valeur
+- **THEN** il passe par le brouillon et aucune écriture directe n'est émise avant l'enregistrement par le dashboard
+
+#### Scenario: Onglet tiers qui écrit lui-même
+- **WHEN** un composant d'un onglet `thermostat_config` contribué par un plugin tiers appelle un service de Home Assistant pour écrire un paramètre qui vit dans les entités de son plugin
+- **THEN** l'appel est émis sans être bloqué par le dashboard, et le brouillon du dashboard n'est pas modifié par cet appel
 
 ### Requirement: Registre unique côté dashboard
 Le package SHALL déléguer l'enregistrement au registre du dashboard présent dans la page, et ne SHALL pas contenir de registre propre. Plusieurs plugins qui embarquent chacun une copie du package SHALL enregistrer leurs contributions dans le même registre.

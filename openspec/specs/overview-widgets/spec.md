@@ -1,7 +1,7 @@
 # overview-widgets Specification
 
 ## Purpose
-Montrer, dans les vues d'ensemble du dashboard et d'un thermostat, les éléments de fonctionnement de Versatile Thermostat (valeurs mesurées, états, alertes), en lecture seule, par des widgets contribués par les plugins.
+Montrer, dans les vues d'ensemble du dashboard et d'un thermostat, les éléments de fonctionnement de Versatile Thermostat (valeurs mesurées, états, alertes), par des widgets contribués par les plugins. Les widgets des plugins natifs sont en lecture seule ; ceux des autres plugins peuvent aussi écrire.
 
 ## Requirements
 
@@ -133,11 +133,23 @@ Un widget ne SHALL pas afficher un élément que Versatile Thermostat ne publie 
 - **THEN** le widget de fenêtre n'affiche aucun délai restant
 
 ### Requirement: Affichage seul
-Les widgets SHALL afficher l'état de fonctionnement sans le modifier : aucun widget ne SHALL appeler de service de Home Assistant, et aucun bouton de commande (mode, preset, verrou, contournement de fenêtre, mode central, apprentissage) ne SHALL être dessiné.
+Les widgets contribués par un plugin natif (identifiant de plugin commençant par `core`) SHALL afficher l'état de fonctionnement sans le modifier : ils ne SHALL appeler aucun service de Home Assistant ni dessiner aucun bouton de commande. Les widgets contribués par un autre plugin SHALL pouvoir appeler les services de Home Assistant et dessiner des commandes, sans que le dashboard les en empêche.
 
 #### Scenario: Aucun appel de service
-- **WHEN** un widget est affiché et que l'utilisateur interagit avec lui
+- **WHEN** un widget d'un plugin natif est affiché et que l'utilisateur interagit avec lui
 - **THEN** aucun appel `callService` n'est émis
+
+#### Scenario: Widget natif sans commande
+- **WHEN** un widget d'un plugin natif est affiché
+- **THEN** aucun bouton de commande (mode, preset, verrou, contournement de fenêtre, mode central, apprentissage) n'est dessiné
+
+#### Scenario: Widget de plugin tiers qui écrit
+- **WHEN** un widget contribué par un plugin tiers appelle `hass.callService` à la suite d'une action de l'utilisateur
+- **THEN** l'appel est émis vers Home Assistant sans être bloqué par le dashboard
+
+#### Scenario: Widget de plugin tiers qui commande
+- **WHEN** un plugin tiers contribue un widget qui dessine un bouton de commande
+- **THEN** le widget est affiché avec son bouton
 
 ### Requirement: Grille et taille des widgets
 Le conteneur des widgets SHALL calculer le nombre de colonnes de la grille (colonnes de 280 px minimum), appliquer à chaque widget la largeur de sa `size` limitée à ce nombre (`"full"` pour toute la rangée) et une hauteur minimale de `rows` fois 140 px plus les écarts quand `rows` est déclaré. Sans `size`, un widget SHALL occuper une colonne sans hauteur minimale. Le conteneur SHALL ne pas réordonner les cartes pour combler les trous.

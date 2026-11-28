@@ -128,7 +128,7 @@ feature on or off, and the save actions are at the foot of its card while the fe
 | Humidity | thermostat only | **Use humidity sensor** is unchecked | A humidity sensor. The dashboard suggests the one of the same device. |
 | Heating failure detection | the features of the type offer it | the feature is off | The thresholds of the detection. |
 
-The identifiers of these sections, which a plugin can use to place its own tab, are in [Native plugins](../plugins/native-plugins.md).
+The identifiers of these sections, which a UI plugin can use to place its own tab, are in [Native UI plugins](../plugins/native-plugins.md).
 
 ## What VT would do with these settings
 The sections TPI parameters, Window and Safety and manual override of a thermostat end with a closed panel **What VT would do with these settings**.

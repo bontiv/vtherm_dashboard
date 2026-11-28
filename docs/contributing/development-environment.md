@@ -252,7 +252,7 @@ thousands of files of `node_modules` through it made each file of Vitest tests s
 | `pytest tests/test_schema_drift.py --update-schemas` | `shared/vtherm-config-schemas.json`. |
 | `pytest tests/test_hacs_contract.py --update-hacs-answers` | `shared/hacs-answers.json`, the answers of the real HACS that the adapter is tested against. |
 | `pytest tests/test_marketplace_contract.py --update-marketplace-answers` | `shared/marketplace-answers.json`, the answers of the real Marketplace of Home Assistant that the adapter is tested against. |
-| `UPDATE_NATIVE_DOCS=1 npx vitest run frontend/test/native-docs.test.ts` | The table of the contributions in [Native plugins](../plugins/native-plugins.md). |
+| `UPDATE_NATIVE_DOCS=1 npx vitest run frontend/test/native-docs.test.ts` | The table of the contributions in [Native UI plugins](../plugins/native-plugins.md). |
 
 ### The preview
 `npm run preview -w frontend` serves the panel on port 5199 with a fake Home Assistant, without Home Assistant (the development

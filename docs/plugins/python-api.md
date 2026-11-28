@@ -1,8 +1,8 @@
 # Python API for UI plugins
 
-A UI plugin is an integration that adds screens to the Versatile Thermostat dashboard. It declares itself
+A UI plugin is a unit that adds screens to the Versatile Thermostat dashboard. It declares itself
 in Python, through the `vtherm_api` package, and ships a JavaScript module that the dashboard loads.
-This page describes the Python declaration. Audience: plugin authors.
+This page describes the Python declaration, which runs in the integration of your plugin package. Audience: plugin authors. The terms are defined in the [terminology](plugin-development.md#terminology).
 
 The registry lives in `vtherm_api` and is **passive**: it checks the structure of a declaration and the uniqueness
 of its identifier, and keeps the declarations in registration order. It does not sort the plugins and does not
@@ -53,7 +53,7 @@ register_ui_plugin(plugin_id, js_url, dashboard_version, *, requires=None, load_
 
 | Parameter | Type | Required | Default | Example | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| `plugin_id` | `str` | yes | none | `"my_plugin"` | Unique identifier of the plugin. Surrounding spaces are removed. The identifiers `core` and `core_*` are reserved for the native plugins of the dashboard. |
+| `plugin_id` | `str` | yes | none | `"my_plugin"` | Unique identifier of the UI plugin. Surrounding spaces are removed. The identifiers `core` and `core_*` are reserved for the native UI plugins of the dashboard. |
 | `js_url` | `str` | yes | none | `"/my_plugin_static/my-plugin.js"` | URL of the JavaScript module. It must be a path of your Home Assistant instance that starts with `/`. |
 | `dashboard_version` | `str` | yes | none | `">=1.0,<2.0"` | Versions of the dashboard that the plugin supports. Comparators `>=`, `>`, `<=`, `<` and `==` separated by commas, all of which must be satisfied. `1.0` means `1.0.0`. |
 | `requires` | `list[str]` | no | no dependency | `["core"]` | Plugins that must be present. If one is missing or fails, your plugin is not loaded. |

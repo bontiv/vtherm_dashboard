@@ -1,7 +1,7 @@
 # Loading and dependencies
 
-How the dashboard decides which plugins to load, in which order, and what it shows when a plugin does not load.
-Audience: plugin authors.
+How the dashboard decides which UI plugins to load, in which order, and what it shows when a UI plugin does not load.
+Audience: plugin authors. The terms are defined in the [terminology](plugin-development.md#terminology).
 
 ## Who does what
 
@@ -10,12 +10,12 @@ integration (on the server) builds the list: it validates every plugin, checks i
 dependencies and computes the load order. The browser then imports the modules of the ready plugins one after the other,
 in that order. The list is described in the [WebSocket API](../reference/websocket-api.md).
 
-A plugin that registers after the dashboard was opened is loaded the next time the page is loaded.
+A UI plugin that registers after the dashboard was opened is loaded the next time the page is loaded.
 
 ## Load dependencies
 
-A plugin declares three optional lists of plugin identifiers in `register_ui_plugin` (see the
-[Python API](python-api.md)):
+The Python code of your integration (the plugin package) calls `register_ui_plugin` (see the
+[Python API](python-api.md)). It can pass three optional lists. Each list holds identifiers of other UI plugins, not of integrations or add-ons:
 
 | Field | Meaning | If the other plugin is absent |
 | --- | --- | --- |
@@ -57,7 +57,7 @@ Rules of the order:
 - A plugin that requires another one fails if the other one fails to import. Its status is then `missing_dependency`
   and it is not imported. The same goes for the plugins that require it.
 
-## Plugin status
+## UI plugin status
 
 The plugin status page of the dashboard (in the Configuration menu) lists every plugin with its state, the cause and its source.
 

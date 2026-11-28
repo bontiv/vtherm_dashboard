@@ -1,5 +1,5 @@
-# Developing a plugin in the dashboard
-Audience: plugin authors.
+# Development mode
+Audience: plugin authors. The terms are defined in the [terminology](plugin-development.md#terminology).
 
 The development mode loads your plugin from a server on your computer, so that you see a change after a reload of the page. You do
 not install anything and you do not restart Home Assistant. It is for administrators only.
@@ -14,7 +14,7 @@ not install anything and you do not restart Home Assistant. It is for administra
   isolation of failures. See [Loading and dependencies](loading-and-dependencies.md).
 - While at least one entry is active, a banner "Development mode" with the identifiers of the plugins is shown on every page.
 
-The configurations below are the ones of the sample plugin. [Developing a plugin](plugin-development.md) uses them from the start.
+The configurations below are the ones of the sample plugin package. [Developing a UI plugin](plugin-development.md) uses them from the start.
 
 ## Add an entry
 Open **Configuration > Development** (the group "Dashboard" of the menu). The page lists your entries, and each one can be enabled,

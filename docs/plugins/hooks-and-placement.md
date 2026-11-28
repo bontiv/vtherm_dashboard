@@ -1,8 +1,8 @@
 # Hooks and placement
 
-A plugin adds things to the dashboard by contributing to hooks, and says where each contribution goes with a placement.
+A UI plugin adds things to the dashboard by contributing to hooks, and says where each contribution goes with a placement.
 This page describes the seven hooks, the menus they build, the six placements and how they are resolved.
-Audience: plugin authors.
+Audience: plugin authors. The terms are defined in the [terminology](plugin-development.md#terminology).
 
 ## The seven hooks
 
@@ -170,7 +170,7 @@ exports as `CORE_MENU_GROUPS`:
 A section of yours that declares one of these groups joins the heading of the native sections: placed between two native sections of
 that group, it does not cut the heading in two. The dashboard translates these headings, so your catalogs do not hold them. The prefix
 `core:` is reserved for the groups of the core: a key of your catalogs that starts with it is not used as a heading. The order of the
-native sections is in [Native plugins](native-plugins.md#order-and-groups-of-the-menus).
+native sections is in [Native UI plugins](native-plugins.md#order-and-groups-of-the-menus).
 
 ### Status of a configuration section
 Each entry of `thermostat_config` and `general_config` shows a status at the right of its title, in the menu and in the drawer of a

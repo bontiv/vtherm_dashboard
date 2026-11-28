@@ -1,6 +1,6 @@
 # Version constraints
 
-A plugin says which versions of the dashboard it supports with `dashboard_version`, when it registers in Python. The
+A UI plugin says which versions of the dashboard it supports with `dashboard_version`, when it registers in Python. The
 dashboard checks it before it downloads the module: a plugin that was not made for the running version is never executed.
 Audience: plugin authors.
 

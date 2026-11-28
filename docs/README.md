@@ -1,24 +1,24 @@
 # Documentation
 
 Documentation of the Versatile Thermostat dashboard ("Versatile Thermostat" in the side menu of Home Assistant). Every page of `docs/` is listed here with the
-people it is written for: **User** (uses the dashboard), **Plugin author** (writes a UI plugin) and **Contributor**
+people it is written for: **User** (uses the dashboard), **Plugin author** (writes a UI plugin and the plugin package that ships it, see the [terminology](plugins/plugin-development.md#terminology)) and **Contributor**
 (works on this repository).
 
 | Page | Audience | Content |
 | --- | --- | --- |
-| [Using the dashboard](user/dashboard.md) | User | Open the dashboard, the tabs, the menu and the breadcrumb, a phone, and the status of the plugins. |
+| [Using the dashboard](user/dashboard.md) | User | Open the dashboard, the tabs, the menu and the breadcrumb, a phone, and the status of the UI plugins. |
 | [Configuring thermostats](user/configuration.md) | User | The draft and its save bar, the central configuration, creating a thermostat, and each section of the configuration. |
 | [Add-ons for Versatile Thermostat](user/complements.md) | User | The catalog, the states of an add-on, the installation with HACS, the restart, the configuration, and the update and removal by HACS. |
-| [Developing a plugin](plugins/plugin-development.md) | Plugin author | The whole procedure with the sample plugin: project, declaration in Python, elements, translations, placements, development mode, tests, installation, publication and a new major version of the dashboard. |
+| [Developing a UI plugin](plugins/plugin-development.md) | Plugin author | The terminology, then the whole procedure with the sample plugin package: project, declaration in Python, elements, translations, placements, development mode, tests, installation, publication and a new major version of the dashboard. |
 | [Python API for UI plugins](plugins/python-api.md) | Plugin author | Declare a UI plugin with `register_ui_plugin`, its parameters, its errors and what the dashboard checks later. |
-| [Native plugins](plugins/native-plugins.md) | Plugin author | The 16 native plugins, their load order, and the identifiers of their contributions that a plugin can use as a position. |
-| [Loading and dependencies](plugins/loading-and-dependencies.md) | Plugin author | `requires`, `load_after` and `load_before`, the load order and the status of a plugin. |
+| [Native UI plugins](plugins/native-plugins.md) | Plugin author | The 16 native UI plugins, their load order, and the identifiers of their contributions that a UI plugin can use as a position. |
+| [Loading and dependencies](plugins/loading-and-dependencies.md) | Plugin author | `requires`, `load_after` and `load_before`, the load order and the status of a UI plugin. |
 | [Version constraints](plugins/version-constraints.md) | Plugin author | The grammar of `dashboard_version`, pre-releases and how to support a new major version. |
 | [Translations](plugins/internationalization.md) | Plugin author | The English catalog, typed keys, language resolution and fallback, titles as keys, parameters, plurals and catalogs loaded on demand. |
-| [Developing a plugin](plugins/dev-mode.md) | Plugin author | The development mode: entries of the browser, the two kinds of entry, the servers of Vite and Rollup with CORS, the diagnosis of a failure, HTTPS and Safari, and the limits. |
+| [Development mode](plugins/dev-mode.md) | Plugin author | The development mode: entries of the browser, the two kinds of entry, the servers of Vite and Rollup with CORS, the diagnosis of a failure, HTTPS and Safari, and the limits. |
 | [Theming](plugins/theming.md) | Plugin author | Use the variables of the Home Assistant theme and no color of your own. |
 | [Hooks and placement](plugins/hooks-and-placement.md) | Plugin author | The seven hooks, the menus, the six placements, how a position is resolved, visibility and the problems reported. |
-| [Testing a plugin](plugins/testing.md) | Plugin author | The fake dashboard of `@vtherm/dashboard-sdk/testing`: register, resolve, render and check translations. |
+| [Testing a UI plugin](plugins/testing.md) | Plugin author | The fake dashboard of `@vtherm/dashboard-sdk/testing`: register, resolve, render and check translations. |
 | [WebSocket API](reference/websocket-api.md) | Contributor, Plugin author | The commands of the dashboard: the plugins to load, and the reading and writing of the configuration of Versatile Thermostat, with their errors. |
 | [SDK reference](reference/sdk/index.md) | Plugin author | Generated reference of `@vtherm/dashboard-sdk`: types, `registerUiPlugin` and validation. Do not edit it, run `npm run docs:reference`. |
 | [The add-ons feature](contributing/complements.md) | Contributor | The catalog on the server, the adapter of HACS and its fallback, the states, the restart, and the tested versions. |

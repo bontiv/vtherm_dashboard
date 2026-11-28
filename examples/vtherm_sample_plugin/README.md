@@ -1,5 +1,5 @@
 # Sample UI plugin
-A complete UI plugin for the Versatile Thermostat dashboard. [Developing a plugin](../../docs/plugins/plugin-development.md) walks
+A complete UI plugin for the Versatile Thermostat dashboard. [Developing a UI plugin](../../docs/plugins/plugin-development.md) walks
 through it, and every code block of that guide comes from these files.
 
 | Path | What it is |

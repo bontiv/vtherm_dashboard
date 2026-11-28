@@ -63,8 +63,13 @@ that fails does not undo the configuration, and is reported on its field.
 
 ## Versions of Versatile Thermostat
 
+- An entry is editable when its configuration major version is `SUPPORTED_CONFIG_VERSION[0]` and the major version of the installed
+  Versatile Thermostat package is `SUPPORTED_VTHERM_MAJOR` (`const.py`). The minor version of the configuration does not matter. Any other
+  entry, or a package version that is absent or unreadable, is shown read-only (`config_version_newer`), and saving it gives
+  `config_version_unsupported`. The package version comes from `async_get_integration` (`async_vtherm_major` in `vtherm_config.py`), so the
+  WebSocket commands that read are asynchronous and pass the major to the builders.
 - `SUPPORTED_CONFIG_VERSION` in `vtherm_config.py` is the version of configuration (`CONFIG_VERSION`, `CONFIG_MINOR_VERSION`) that the
-  dashboard was written for. An entry with a newer version is shown read-only, and saving it gives `config_version_unsupported`.
+  embedded schema describes. It is not the editing rule.
 - A test compares this version, the domain and the types with the Versatile Thermostat of the folder of `VTHERM_VERSATILE_THERMOSTAT_DIR`.
 - `shared/vtherm-config-schemas.json` describes every form of the flow (key, kind, default, limits). `tests/test_schema_drift.py`
   compares it with the forms of the Versatile Thermostat of the environment and names every field that was added, removed or changed.
@@ -76,6 +81,7 @@ When Versatile Thermostat changes:
 2. For each difference of `test_schema_drift.py`, update the native tab that shows the form.
 3. Run `pytest tests/test_schema_drift.py --update-schemas` to write the new description, and commit it with the change of the tab.
 4. If the version of configuration changed, review the migration of Versatile Thermostat, then update `SUPPORTED_CONFIG_VERSION`.
+5. If the major version of the package changed, update `SUPPORTED_VTHERM_MAJOR`. A test compares it with the manifest of the checkout.
 
 ## Add a step
 

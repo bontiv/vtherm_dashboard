@@ -16,16 +16,23 @@ from homeassistant.helpers import area_registry as ar
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import floor_registry as fr
+from homeassistant.loader import IntegrationNotFound, async_get_integration
+
+from .const import SUPPORTED_VTHERM_MAJOR
+from .version_constraints import VersionConstraintError, parse_version
 
 VTHERM_DOMAIN = "versatile_thermostat"
 """The domain of Versatile Thermostat."""
 
 SUPPORTED_CONFIG_VERSION: tuple[int, int] = (2, 4)
-"""The version and the minor version of the configuration entries that the dashboard can edit. A newer entry is read-only.
+"""The version and the minor version of the configuration that the embedded schema describes. It is not the editing rule.
 
 It is the `CONFIG_VERSION` and `CONFIG_MINOR_VERSION` of Versatile Thermostat that the dashboard was written for. A test compares them
 with the Versatile Thermostat of the development environment, so a new version of the configuration is noticed.
 """
+
+SUPPORTED_CONFIG_MAJOR = SUPPORTED_CONFIG_VERSION[0]
+"""The major version of the configuration entries that the dashboard can edit. The minor version does not matter."""
 
 CONF_THERMOSTAT_TYPE = "thermostat_type"
 CONF_NAME = "name"
@@ -41,7 +48,10 @@ THERMOSTAT_TYPES: dict[str, str] = {
 """The `thermostat_type` of a thermostat of Versatile Thermostat, and the name that the dashboard gives to it."""
 
 READ_ONLY_NEWER_VERSION = "config_version_newer"
-"""The reason of a configuration that is read-only: its version is newer than the one that the dashboard supports."""
+"""The reason of a configuration that is read-only: its version, or the installed Versatile Thermostat, is not one that the dashboard can edit.
+
+The value is historical and kept because it is published. The human message tells the two causes apart.
+"""
 
 
 def is_central(entry: ConfigEntry) -> bool:
@@ -49,11 +59,30 @@ def is_central(entry: ConfigEntry) -> bool:
     return entry.data.get(CONF_THERMOSTAT_TYPE) == CENTRAL_TYPE
 
 
-def read_only_reason(entry: ConfigEntry) -> str | None:
-    """Return why the entry cannot be edited, or None when it can."""
-    if (entry.version, entry.minor_version) > SUPPORTED_CONFIG_VERSION:
+def read_only_reason(entry: ConfigEntry, vtherm_major: int | None) -> str | None:
+    """Return why the entry cannot be edited, or None when it can.
+
+    An entry is editable when its configuration major version and the major version of the installed Versatile Thermostat package are
+    the supported ones. The minor version of the configuration does not matter. A package version that is unknown (None) is not verified,
+    so the entry is read-only.
+    """
+    if entry.version != SUPPORTED_CONFIG_MAJOR or vtherm_major != SUPPORTED_VTHERM_MAJOR:
         return READ_ONLY_NEWER_VERSION
     return None
+
+
+async def async_vtherm_major(hass: HomeAssistant) -> int | None:
+    """Return the major version of the installed Versatile Thermostat package, or None when it is absent or unreadable."""
+    try:
+        integration = await async_get_integration(hass, VTHERM_DOMAIN)
+    except IntegrationNotFound:
+        return None
+    if integration.version is None:
+        return None
+    try:
+        return parse_version(str(integration.version)).major
+    except VersionConstraintError:
+        return None
 
 
 @dataclass(frozen=True)
@@ -174,14 +203,14 @@ def location_of(hass: HomeAssistant, entry: ConfigEntry) -> ThermostatLocation:
     )
 
 
-def list_thermostats(hass: HomeAssistant) -> list[ThermostatSummary]:
+def list_thermostats(hass: HomeAssistant, vtherm_major: int | None) -> list[ThermostatSummary]:
     """List the thermostats, without the central configuration, ordered by name, with where each one is."""
     summaries = [
         ThermostatSummary(
             entry.entry_id,
             str(entry.data.get(CONF_NAME, entry.title)),
             type_name(entry),
-            read_only_reason(entry) is not None,
+            read_only_reason(entry, vtherm_major) is not None,
             location_of(hass, entry),
         )
         for entry in entries(hass)
@@ -190,7 +219,7 @@ def list_thermostats(hass: HomeAssistant) -> list[ThermostatSummary]:
     return sorted(summaries, key=lambda summary: summary.name.casefold())
 
 
-def view_of(entry: ConfigEntry) -> ConfigView:
+def view_of(entry: ConfigEntry, vtherm_major: int | None) -> ConfigView:
     """Build the view of an entry."""
     return ConfigView(
         id=entry.entry_id,
@@ -199,11 +228,11 @@ def view_of(entry: ConfigEntry) -> ConfigView:
         values=dict(entry.data),
         version=entry.version,
         minor_version=entry.minor_version,
-        read_only_reason=read_only_reason(entry),
+        read_only_reason=read_only_reason(entry, vtherm_major),
     )
 
 
-def read_config(hass: HomeAssistant, entry_id: str) -> ConfigView:
+def read_config(hass: HomeAssistant, entry_id: str, vtherm_major: int | None) -> ConfigView:
     """Read the configuration of an entry.
 
     Raises:
@@ -212,10 +241,10 @@ def read_config(hass: HomeAssistant, entry_id: str) -> ConfigView:
     entry = next((candidate for candidate in entries(hass) if candidate.entry_id == entry_id), None)
     if entry is None:
         raise ConfigNotFoundError(entry_id)
-    return view_of(entry)
+    return view_of(entry, vtherm_major)
 
 
-def read_central_config(hass: HomeAssistant) -> ConfigView | None:
+def read_central_config(hass: HomeAssistant, vtherm_major: int | None) -> ConfigView | None:
     """Read the central configuration, or return None when there is none."""
     entry = central_entry(hass)
-    return None if entry is None else view_of(entry)
+    return None if entry is None else view_of(entry, vtherm_major)

@@ -115,7 +115,8 @@ Lists the thermostats, ordered by name, and tells whether a central configuratio
 | `thermostats` | `list` | Each thermostat: `id` (identifier of its configuration entry), `name`, `type` (`over_switch`, `over_climate` or `over_valve`), `read_only`, and where it is in Home Assistant (see below). The central configuration is not in the list. |
 | `has_central_config` | `boolean` | Whether the central configuration exists. |
 | `central_config_id` | `string` or `null` | The identifier of the central configuration. |
-| `supported_config_version` | `list` | The version and the minor version of configuration that the dashboard can edit, for example `[2, 4]`. |
+| `supported_config_version` | `list` | The version and the minor version of configuration that the embedded schema describes, for example `[2, 4]`. It is not the editing rule. |
+| `supported_vtherm_major` | `integer` | The major version of the Versatile Thermostat package that the dashboard has verified, for example `10`. A client of an older dashboard may not receive it. |
 
 Where each thermostat is, read from the registries of Home Assistant. Every field is `null` when the registries do not have it, for
 example for a thermostat that is not loaded.
@@ -139,7 +140,7 @@ Reads the configuration of an entry. Request: `entry_id`.
 | `values` | `object` | The values of the configuration, by key of Versatile Thermostat. |
 | `version`, `minor_version` | `integer` | The version of the configuration of the entry. |
 | `read_only` | `boolean` | True when the dashboard cannot edit the entry. |
-| `read_only_reason` | `string` or `null` | `config_version_newer`: the version of the entry is newer than `supported_config_version`. Use the screens of Home Assistant, or update the dashboard. |
+| `read_only_reason` | `string` or `null` | `config_version_newer`: the configuration major version is not the supported one, or the installed Versatile Thermostat package major version is not `supported_vtherm_major` or could not be read. The minor version of the configuration does not matter. The code is historical and covers both causes. Use the screens of Home Assistant, or update the dashboard. |
 
 The error `not_found` means that no entry of Versatile Thermostat has this identifier.
 

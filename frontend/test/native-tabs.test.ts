@@ -282,7 +282,7 @@ describe("the tab presets", () => {
   function withPresets(own: { preset: string; value: number }[]) {
     host.hass.setWebSocketHandler((message) => {
       if (message["type"] === "vtherm_dashboard/get_thermostats") {
-        return { thermostats: [], has_central_config: true, central_config_id: "central", supported_config_version: [2, 4] };
+        return { thermostats: [], has_central_config: true, central_config_id: "central", supported_config_version: [2, 4], supported_vtherm_major: 10 };
       }
       const list = message["entry_id"] === "central" ? [{ preset: "eco_temp", value: 18 }] : own;
       return { presets: list.map((preset) => ({ ...preset, entity_id: `number.${preset.preset}`, min: 7, max: 35, step: 0.1, unit: "°C" })) };

@@ -10,7 +10,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.loader import async_get_integration
 from vtherm_api import VThermAPI
 
-from .const import DATA_DEV_SERVER, DOMAIN
+from .const import DATA_DEV_SERVER, DOMAIN, SUPPORTED_VTHERM_MAJOR
 from .config_flow_driver import FlowConfigWriter, SaveResult
 from .complements import (
     ERROR_NOT_FOUND,
@@ -24,7 +24,7 @@ from .complements import (
 )
 from .plugin_list import build_plugin_list
 from .presets import async_set_presets, read_presets
-from .vtherm_config import SUPPORTED_CONFIG_VERSION, ConfigNotFoundError, central_entry, list_thermostats, read_central_config, read_config
+from .vtherm_config import SUPPORTED_CONFIG_VERSION, ConfigNotFoundError, async_vtherm_major, central_entry, list_thermostats, read_central_config, read_config
 
 WS_GET_UI_PLUGINS = f"{DOMAIN}/get_ui_plugins"
 """The type of the command that returns the UI plugins to load."""
@@ -99,48 +99,50 @@ async def ws_get_ui_plugins(hass: HomeAssistant, connection: websocket_api.Activ
 
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required("type"): WS_GET_THERMOSTATS})
-@callback
-def ws_get_thermostats(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
+@websocket_api.async_response
+async def ws_get_thermostats(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     """List the thermostats of Versatile Thermostat, and tell whether a central configuration exists."""
     central = central_entry(hass)
+    vtherm_major = await async_vtherm_major(hass)
     connection.send_result(
         msg["id"],
         {
-            "thermostats": [summary.as_dict() for summary in list_thermostats(hass)],
+            "thermostats": [summary.as_dict() for summary in list_thermostats(hass, vtherm_major)],
             "has_central_config": central is not None,
             "central_config_id": None if central is None else central.entry_id,
             "supported_config_version": list(SUPPORTED_CONFIG_VERSION),
+            "supported_vtherm_major": SUPPORTED_VTHERM_MAJOR,
         },
     )
 
 
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required("type"): WS_GET_CONFIG, vol.Required("entry_id"): str})
-@callback
-def ws_get_config(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
+@websocket_api.async_response
+async def ws_get_config(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     """Read the configuration of a thermostat, or of the central configuration, by the identifier of its entry."""
     try:
-        connection.send_result(msg["id"], read_config(hass, msg["entry_id"]).as_dict())
+        connection.send_result(msg["id"], read_config(hass, msg["entry_id"], await async_vtherm_major(hass)).as_dict())
     except ConfigNotFoundError:
         connection.send_error(msg["id"], websocket_api.ERR_NOT_FOUND, "No Versatile Thermostat configuration has this identifier")
 
 
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required("type"): WS_GET_CENTRAL_CONFIG})
-@callback
-def ws_get_central_config(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
+@websocket_api.async_response
+async def ws_get_central_config(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     """Read the central configuration. The result is null when there is none."""
-    central = read_central_config(hass)
+    central = read_central_config(hass, await async_vtherm_major(hass))
     connection.send_result(msg["id"], None if central is None else central.as_dict())
 
 
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required("type"): WS_GET_PRESETS, vol.Required("entry_id"): str})
-@callback
-def ws_get_presets(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
+@websocket_api.async_response
+async def ws_get_presets(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     """Read the preset temperatures of a thermostat or of the central configuration. The list is empty for a thermostat that uses the central presets."""
     try:
-        read_config(hass, msg["entry_id"])
+        read_config(hass, msg["entry_id"], await async_vtherm_major(hass))
     except ConfigNotFoundError:
         connection.send_error(msg["id"], websocket_api.ERR_NOT_FOUND, "No Versatile Thermostat configuration has this identifier")
         return

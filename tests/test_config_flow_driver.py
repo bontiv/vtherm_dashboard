@@ -10,6 +10,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.setup import async_setup_component
 from pytest_homeassistant.common import MockConfigEntry
 
+from custom_components.vtherm_dashboard import config_flow_driver
 from custom_components.vtherm_dashboard.config_flow_driver import (
     ConfigWriter,
     FlowConfigWriter,
@@ -368,11 +369,27 @@ async def test_unknown_entry_and_unknown_tab(hass: HomeAssistant, writer: Config
     assert flows_in_progress(hass) == 0
 
 
-async def test_a_configuration_that_is_too_recent_is_not_edited(hass: HomeAssistant, writer: ConfigWriter) -> None:
-    """An entry with a newer version of configuration is read-only: no flow is opened."""
-    # An entry written by a newer Versatile Thermostat. It is not set up: the Versatile Thermostat of the tests would migrate it down.
-    entry = MockConfigEntry(domain=VTHERM_DOMAIN, title="Future", data={"thermostat_type": "thermostat_over_switch", "name": "Future"}, version=2, minor_version=9)
+@pytest.mark.parametrize(("version", "vtherm_major"), [(3, 10), (2, 11), (2, None)])
+async def test_a_configuration_that_the_dashboard_cannot_verify_is_not_edited(
+    hass: HomeAssistant, writer: ConfigWriter, monkeypatch: pytest.MonkeyPatch, version: int, vtherm_major: int | None
+) -> None:
+    """An entry whose configuration major or package major is not the supported one is read-only: no flow is opened."""
+
+    async def fake_major(_hass: HomeAssistant) -> int | None:
+        return vtherm_major
+
+    monkeypatch.setattr(config_flow_driver, "async_vtherm_major", fake_major)
+    # An entry that is not set up: the Versatile Thermostat of the tests would migrate it down.
+    entry = MockConfigEntry(domain=VTHERM_DOMAIN, title="Future", data={"thermostat_type": "thermostat_over_switch", "name": "Future"}, version=version, minor_version=4)
     entry.add_to_hass(hass)
     result = await writer.async_update(entry.entry_id, {"main": {"cycle_min": 3}})
     assert codes(result) == [(None, "base", "config_version_unsupported")]
     assert flows_in_progress(hass) == 0
+
+
+async def test_a_newer_minor_version_of_the_configuration_is_edited(hass: HomeAssistant, writer: ConfigWriter) -> None:
+    """A 2.9 entry on the verified package is not refused as read-only: the flow of Versatile Thermostat is reached and judges the values."""
+    entry = MockConfigEntry(domain=VTHERM_DOMAIN, title="Future", data={"thermostat_type": "thermostat_over_switch", "name": "Future"}, version=2, minor_version=9)
+    entry.add_to_hass(hass)
+    result = await writer.async_update(entry.entry_id, {"main": {"cycle_min": 3}})
+    assert (None, "base", "config_version_unsupported") not in codes(result)

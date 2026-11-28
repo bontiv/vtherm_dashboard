@@ -10,7 +10,7 @@ import type { CompleteCatalog } from "@vtherm/dashboard-sdk";
 /** The English catalog, which gives the keys. */
 export const en = {
   "error.central_config_exists": "A central configuration already exists.",
-  "error.config_version_unsupported": "This configuration was made by a newer Versatile Thermostat and cannot be changed here.",
+  "error.config_version_unsupported": "This configuration cannot be verified: the installed Versatile Thermostat version is not one this dashboard can edit, so it cannot be changed here.",
   "error.configuration_not_complete": "The configuration is not complete: a required element is missing.",
   "error.field_not_applicable": "This field does not apply to this configuration and was not saved.",
   "error.flow_failed": "Versatile Thermostat did not accept the configuration.",
@@ -43,7 +43,7 @@ export const en = {
 /** The French catalog. */
 export const fr = {
   "error.central_config_exists": "Une configuration centrale existe déjà.",
-  "error.config_version_unsupported": "Cette configuration provient d'une version plus récente de Versatile Thermostat et ne peut pas être modifiée ici.",
+  "error.config_version_unsupported": "Cette configuration ne peut pas être vérifiée : la version installée de Versatile Thermostat n'est pas une version que ce tableau de bord sait éditer, elle ne peut donc pas être modifiée ici.",
   "error.configuration_not_complete": "La configuration est incomplète : un élément obligatoire manque.",
   "error.field_not_applicable": "Ce champ ne s'applique pas à cette configuration et n'a pas été enregistré.",
   "error.flow_failed": "Versatile Thermostat n'a pas accepté la configuration.",
@@ -76,7 +76,7 @@ export const fr = {
 /** The German catalog. */
 export const de = {
   "error.central_config_exists": "Es gibt bereits eine zentrale Konfiguration.",
-  "error.config_version_unsupported": "Diese Konfiguration stammt von einer neueren Version von Versatile Thermostat und kann hier nicht geändert werden.",
+  "error.config_version_unsupported": "Diese Konfiguration kann nicht überprüft werden: Die installierte Version von Versatile Thermostat kann mit diesem Dashboard nicht bearbeitet werden, daher kann sie hier nicht geändert werden.",
   "error.configuration_not_complete": "Die Konfiguration ist unvollständig: Ein erforderliches Element fehlt.",
   "error.field_not_applicable": "Dieses Feld gilt nicht für diese Konfiguration und wurde nicht gespeichert.",
   "error.flow_failed": "Versatile Thermostat hat die Konfiguration nicht angenommen.",

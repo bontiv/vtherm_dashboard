@@ -26,7 +26,10 @@ export interface ThermostatList {
   readonly thermostats: readonly ThermostatEntry[];
   readonly has_central_config: boolean;
   readonly central_config_id: string | null;
+  /** The version and the minor version of the configuration that the embedded schema describes. It is not the editing rule. */
   readonly supported_config_version: readonly number[];
+  /** The major version of the Versatile Thermostat package that the dashboard has verified. Absent from a backend that predates it. */
+  readonly supported_vtherm_major?: number;
 }
 
 /** The configuration of an entry. */

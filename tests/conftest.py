@@ -86,7 +86,7 @@ def setup_dashboard_fixture(hass: HomeAssistant, frontend_module):  # pylint: di
     async def _setup() -> MockConfigEntry:
         if "versatile_thermostat" not in hass.config.components:
             # A fake dependency, unless the test set up the real Versatile Thermostat.
-            mock_integration(hass, MockModule("versatile_thermostat"))
+            mock_integration(hass, MockModule("versatile_thermostat", partial_manifest={"version": "10.6.4"}))
         entry = MockConfigEntry(domain=DOMAIN, data={})
         entry.add_to_hass(hass)
         assert await hass.config_entries.async_setup(entry.entry_id)

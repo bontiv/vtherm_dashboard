@@ -19,7 +19,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType, InvalidData, UnknownFlow
 from vtherm_api import get_vtherm_logger
 
-from .vtherm_config import CENTRAL_TYPE, THERMOSTAT_TYPES, VTHERM_DOMAIN, central_entry, entries, read_only_reason
+from .vtherm_config import CENTRAL_TYPE, THERMOSTAT_TYPES, VTHERM_DOMAIN, async_vtherm_major, central_entry, entries, read_only_reason
 
 _LOGGER = get_vtherm_logger(__name__)
 
@@ -130,7 +130,7 @@ class FlowConfigWriter(ConfigWriter):
         entry = next((candidate for candidate in entries(self._hass) if candidate.entry_id == entry_id), None)
         if entry is None:
             return failure(None, BASE, ERROR_NOT_FOUND)
-        if read_only_reason(entry) is not None:
+        if read_only_reason(entry, await async_vtherm_major(self._hass)) is not None:
             return failure(None, BASE, ERROR_READ_ONLY)
         if errors := self._unknown_tabs(changes):
             return SaveResult(False, None, errors)

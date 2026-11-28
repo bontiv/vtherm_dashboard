@@ -9,6 +9,12 @@ WebSocket command that lists the plugins) and what to change in a plugin to foll
 ## [Unreleased]
 
 ### Changed
+- A configuration is editable when its configuration major version and the major version of the installed Versatile Thermostat package
+  (`10`) are the supported ones, whatever its minor version. An entry in `2.5` on Versatile Thermostat `10.x` is no longer read-only. A
+  package version that is absent or unreadable, or another major version, leaves the configuration read-only, with a message that says the
+  installed version could not be verified. The reason `config_version_newer` is unchanged.
+- `ws_get_thermostats` adds `supported_vtherm_major`. `supported_config_version` keeps its value and now names the configuration version
+  that the embedded schema describes.
 - Only the widgets and the configuration tabs of the native plugins are limited to what the dashboard saves or shows. A widget of
   another plugin can call the services of Home Assistant and draw commands, and a configuration tab of another plugin can write its own
   data (for example the entities of its plugin) without going through the draft. The native widgets and tabs are checked by a test

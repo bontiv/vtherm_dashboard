@@ -32,7 +32,7 @@ const HEATING = [preset("frost_temp", 7), preset("eco_temp", 17), preset("comfor
 function answer(presets: readonly unknown[]): void {
   host.hass.setWebSocketHandler((message) => {
     if (message["type"] === "vtherm_dashboard/get_thermostats") {
-      return { thermostats: [], has_central_config: true, central_config_id: "central", supported_config_version: [2, 4] };
+      return { thermostats: [], has_central_config: true, central_config_id: "central", supported_config_version: [2, 4], supported_vtherm_major: 10 };
     }
     return { presets };
   });

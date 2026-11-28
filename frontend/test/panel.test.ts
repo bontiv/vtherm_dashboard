@@ -154,7 +154,7 @@ describe("the thermostats tab", () => {
             ],
             has_central_config: false,
             central_config_id: null,
-            supported_config_version: [2, 4],
+            supported_config_version: [2, 4], supported_vtherm_major: 10,
           }
         : undefined;
     const { panel, hass } = await mountPanel({ path: `/vtherm/${CORE_TOP_TABS.thermostats}`, realThermostats: true, handlers: [located] });

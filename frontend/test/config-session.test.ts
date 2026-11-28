@@ -6,7 +6,7 @@ import { ConfigSession } from "../src/config/config-session.ts";
 function fakeApi(): ConfigApi & Record<string, ReturnType<typeof vi.fn>> {
   let cycle = 5;
   return {
-    thermostats: vi.fn(async () => ({ thermostats: [{ id: "a", name: "Salon", type: "over_switch", read_only: false }], has_central_config: true, central_config_id: "c", supported_config_version: [2, 4] })),
+    thermostats: vi.fn(async () => ({ thermostats: [{ id: "a", name: "Salon", type: "over_switch", read_only: false }], has_central_config: true, central_config_id: "c", supported_config_version: [2, 4], supported_vtherm_major: 10 })),
     config: vi.fn(async (id: string) => ({ id, name: "Salon", type: "over_switch", values: { cycle_min: cycle }, version: 2, minor_version: 4, read_only: false, read_only_reason: null })),
     centralConfig: vi.fn(),
     presets: vi.fn(async () => [{ preset: "eco_temp", entity_id: "number.eco", value: 17, min: 7, max: 35, step: 0.1, unit: "°C" }]),
@@ -85,7 +85,7 @@ describe("the areas of the thermostats", () => {
       ],
       has_central_config: false,
       central_config_id: null,
-      supported_config_version: [2, 4],
+      supported_config_version: [2, 4], supported_vtherm_major: 10,
     }));
     return new ConfigSession(api);
   }

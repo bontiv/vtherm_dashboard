@@ -75,7 +75,7 @@ def test_an_invalid_development_server_is_refused_and_logged(value, caplog) -> N
 async def _setup_without_build(hass: HomeAssistant, tmp_path, monkeypatch) -> MockConfigEntry:
     """Set up the dashboard with an empty www folder."""
     monkeypatch.setattr(panel_module, "WWW_DIR", tmp_path)
-    mock_integration(hass, MockModule("versatile_thermostat"))
+    mock_integration(hass, MockModule("versatile_thermostat", partial_manifest={"version": "10.6.4"}))
     entry = MockConfigEntry(domain=DOMAIN, data={})
     entry.add_to_hass(hass)
     await hass.config_entries.async_setup(entry.entry_id)

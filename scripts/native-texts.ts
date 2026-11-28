@@ -1340,9 +1340,9 @@ export const ERROR_TEXTS: Readonly<Record<string, Text>> = {
   unknown_tab: { en: "This section does not exist.", fr: "Cette section n'existe pas.", de: "Dieser Abschnitt existiert nicht." },
   not_found: { en: "This configuration no longer exists.", fr: "Cette configuration n'existe plus.", de: "Diese Konfiguration existiert nicht mehr." },
   config_version_unsupported: {
-    en: "This configuration was made by a newer Versatile Thermostat and cannot be changed here.",
-    fr: "Cette configuration provient d'une version plus récente de Versatile Thermostat et ne peut pas être modifiée ici.",
-    de: "Diese Konfiguration stammt von einer neueren Version von Versatile Thermostat und kann hier nicht geändert werden.",
+    en: "This configuration cannot be verified: the installed Versatile Thermostat version is not one this dashboard can edit, so it cannot be changed here.",
+    fr: "Cette configuration ne peut pas être vérifiée : la version installée de Versatile Thermostat n'est pas une version que ce tableau de bord sait éditer, elle ne peut donc pas être modifiée ici.",
+    de: "Diese Konfiguration kann nicht überprüft werden: Die installierte Version von Versatile Thermostat kann mit diesem Dashboard nicht bearbeitet werden, daher kann sie hier nicht geändert werden.",
   },
   central_config_exists: { en: "A central configuration already exists.", fr: "Une configuration centrale existe déjà.", de: "Es gibt bereits eine zentrale Konfiguration." },
   unknown_thermostat_type: { en: "This type of thermostat does not exist.", fr: "Ce type de thermostat n'existe pas.", de: "Dieser Thermostattyp existiert nicht." },

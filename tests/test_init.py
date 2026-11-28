@@ -14,7 +14,7 @@ from custom_components.vtherm_dashboard.const import DOMAIN
 
 def _add_versatile_thermostat(hass: HomeAssistant) -> None:
     """Make a fake Versatile Thermostat integration available as the dependency of the dashboard."""
-    mock_integration(hass, MockModule("versatile_thermostat"))
+    mock_integration(hass, MockModule("versatile_thermostat", partial_manifest={"version": "10.6.4"}))
 
 
 @pytest.mark.usefixtures("frontend_module")

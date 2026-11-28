@@ -143,7 +143,7 @@ export function createHass(language = "en", answer?: unknown, configs: FakeConfi
             .map(([id, config]) => ({ id, name: config.name, type: config.type, read_only: config.read_only === true })),
           has_central_config: centralId !== null,
           central_config_id: centralId,
-          supported_config_version: [2, 4],
+          supported_config_version: [2, 4], supported_vtherm_major: 10,
         };
       }
       case "vtherm_dashboard/get_config": {

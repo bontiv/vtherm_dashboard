@@ -246,7 +246,7 @@ describe("the groups, the entities and the presets", () => {
   it("shows the temperatures of the presets in compact cells of the table, not with the number selector, with their unit and limits", async () => {
     host.hass.setWebSocketHandler((message) => {
       if (message["type"] === "vtherm_dashboard/get_thermostats") {
-        return { thermostats: [], has_central_config: true, central_config_id: "central", supported_config_version: [2, 4] };
+        return { thermostats: [], has_central_config: true, central_config_id: "central", supported_config_version: [2, 4], supported_vtherm_major: 10 };
       }
       return { presets: [{ preset: "eco_temp", value: 17, entity_id: "number.eco", min: 7, max: 35, step: 0.1, unit: "°C" }] };
     });

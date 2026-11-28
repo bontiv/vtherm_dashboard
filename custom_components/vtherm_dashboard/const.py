@@ -8,6 +8,9 @@ DOMAIN = "vtherm_dashboard"
 TITLE = "Versatile Thermostat"
 """The title of the configuration entry."""
 
+SUPPORTED_VTHERM_MAJOR = 10
+"""The major version of the Versatile Thermostat package that the dashboard has verified. Another major version is read-only."""
+
 MIN_VTHERM_API_VERSION = "0.11.0"
 """The minimum version of `vtherm_api`. It must match the requirement of `manifest.json`."""
 

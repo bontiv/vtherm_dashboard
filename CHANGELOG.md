@@ -2,13 +2,15 @@
 All notable changes of the dashboard and of the SDK `@vtherm/dashboard-sdk`, which share one version. The format follows
 [Keep a Changelog](https://keepachangelog.com/) and the versions follow [Semantic Versioning](https://semver.org/).
 
-Each version has a section **For plugin authors**: the changes of the contract of the plugins (the SDK, the hooks, the placements, the
-WebSocket command that lists the plugins) and what to change in a plugin to follow them. See
-[Developing a plugin](docs/plugins/plugin-development.md#10-a-new-major-version-of-the-dashboard).
+Each version has a section **For plugin authors**: the changes of the contract of the UI plugins (the SDK, the hooks, the placements, the
+WebSocket command that lists the UI plugins) and what to change in a UI plugin to follow them. See
+[Developing a UI plugin](docs/plugins/plugin-development.md#10-a-new-major-version-of-the-dashboard).
 
 ## [Unreleased]
 
 ### Changed
+- The documentation separates three terms: a UI plugin (the unit registered with `register_ui_plugin` and loaded by the dashboard), a plugin
+  package (the integration and project that ships it) and a VTherm add-on. See the terminology in the guide to developing a UI plugin.
 - Only the widgets and the configuration tabs of the native plugins are limited to what the dashboard saves or shows. A widget of
   another plugin can call the services of Home Assistant and draw commands, and a configuration tab of another plugin can write its own
   data (for example the entities of its plugin) without going through the draft. The native widgets and tabs are checked by a test

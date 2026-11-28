@@ -1,17 +1,29 @@
-# Developing a plugin
+# Developing a UI plugin
 Audience: plugin authors.
 
-This guide takes you from nothing to a plugin that runs in Home Assistant and that you can publish. It follows a real plugin, the
+This guide takes you from nothing to a UI plugin that runs in Home Assistant and that you can publish. It follows a real plugin package, the
 [sample plugin](../../examples/vtherm_sample_plugin/README.md) of this repository, and every code block comes from its files. The
 reference pages explain each part: [Python API](python-api.md), [Hooks and placement](hooks-and-placement.md),
-[Translations](internationalization.md), [Developing in the dashboard](dev-mode.md) and [Testing a plugin](testing.md).
+[Translations](internationalization.md), [Development mode](dev-mode.md) and [Testing a UI plugin](testing.md).
 
-The plugin of the guide does four things: it adds a section right after the TPI section of every thermostat, it replaces the section
+## Terminology
+The word "plugin" alone is ambiguous, so these pages use three terms:
+
+- A **UI plugin** is the unit that the dashboard loads. It has an identifier, a JavaScript module and a supported range of dashboard
+  versions. It is declared in Python with `register_ui_plugin` and contributes in TypeScript with `registerUiPlugin`. The 16 parts of
+  the dashboard itself are [native UI plugins](native-plugins.md).
+- A **plugin package** is the project that you write and publish: a Home Assistant integration (Python) and a TypeScript project, in one
+  repository. The [sample plugin](../../examples/vtherm_sample_plugin/README.md) is a plugin package. The Python of the integration runs
+  in Home Assistant and registers the UI plugin. The module built from the TypeScript runs in the browser and is the frontend of the UI plugin.
+- A **VTherm add-on** is any entry of the [catalog](../user/complements.md): an integration, a card, a theme, a blueprint or a Home
+  Assistant add-on for Versatile Thermostat. A UI plugin is not a VTherm add-on.
+
+The UI plugin of the guide does four things: it adds a section right after the TPI section of every thermostat, it replaces the section
 "Sync device internal temperature", it adds a widget to the overview of a thermostat, and it removes a widget that another plugin adds.
 
 ## What you need
-- Home Assistant with Versatile Thermostat and the dashboard, and an administrator account. A plugin is made of
-  two parts that you write: Python that declares it, and a JavaScript module that contributes to the dashboard.
+- Home Assistant with Versatile Thermostat and the dashboard, and an administrator account. A UI plugin is made of
+  two parts that you write: Python in the integration that declares it, and a JavaScript module that contributes to the dashboard.
 - Node.js 24 or later and npm, to write and build the module.
 - Python code in a custom integration of Home Assistant. The integration of the sample is `vtherm_sample_plugin`.
 
@@ -57,8 +69,8 @@ Add a `tsconfig.json` and `"type": "module"` to `package.json`:
 The SDK gives the types, `defineTranslations`, `registerUiPlugin` and a fake dashboard for the tests. A plugin does not ship a copy of the dashboard: the dashboard puts its registry in
 the page, and the SDK finds it when your module registers.
 
-## 2. Declare the plugin in Python
-The server decides which plugins load, in which order and whether they are compatible, so everything it needs is declared in Python,
+## 2. Declare the UI plugin in Python
+The server decides which UI plugins load, in which order and whether they are compatible, so everything it needs is declared in Python,
 by the integration that serves your module. Add `vtherm_dashboard` to `dependencies` in `manifest.json`, so that Home Assistant
 sets the dashboard up first.
 
@@ -716,7 +728,7 @@ registerUiPlugin({
 <!-- /example -->
 
 The identifiers of the native sections that you can use as a target, such as `core_tpi.tab.main`, are in
-[Native plugins](native-plugins.md).
+[Native UI plugins](native-plugins.md).
 
 ## 6. Develop with the development mode
 You do not install anything to see a change. Run a development server that sends `Access-Control-Allow-Origin`, with Vite or with
@@ -791,7 +803,7 @@ export default config;
 <!-- /example -->
 
 If a module does not load, **Configuration > Plugins** shows the address that was tried and the usual causes. See
-[Developing in the dashboard](dev-mode.md) for the limits, HTTPS and Safari.
+[Development mode](dev-mode.md) for the limits, HTTPS and Safari.
 
 ## 7. Test with the fake dashboard
 The SDK has a fake dashboard that registers plugins as the real one does, resolves the positions and renders the elements. You test

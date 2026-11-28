@@ -1,6 +1,6 @@
 # Translations
 
-Every text that a plugin shows to the user comes from its translation catalogs: titles, groups, labels, help and error
+Every text that a UI plugin shows to the user comes from its translation catalogs: titles, groups, labels, help and error
 messages. The dashboard gives the plugin the language of the Home Assistant user and falls back to English when a text is
 missing. Audience: plugin authors.
 
@@ -117,7 +117,7 @@ export default {
 
 1. Create the catalog of the language, in its own file (`de.ts`) or in the same file.
 2. Type it. Use `satisfies PartialCatalog<typeof en>` when some keys may be missing, or `satisfies CompleteCatalog<typeof en>`
-   when the language must be complete. Native plugins of the dashboard are complete in English, French and German.
+   when the language must be complete. Native UI plugins of the dashboard are complete in English, French and German.
 3. Add it to the second argument of `defineTranslations`, with its language tag as the key.
 
 ## Check the translations
@@ -125,12 +125,12 @@ export default {
 - The compiler checks the keys: an unknown key in `t`, a key that is missing from a `CompleteCatalog`, and a key that is
   not in the English catalog all fail to compile.
 - In your tests, `assertCompleteTranslations` from `@vtherm/dashboard-sdk/testing` fails and names each missing or unknown key
-  of the languages that must be complete (see [Testing a plugin](testing.md)).
+  of the languages that must be complete (see [Testing a UI plugin](testing.md)).
 - At run time, `translations.warnings` lists the keys that were not found (`missing_key`), the keys that were shown in English although the language of the user has a catalog (`fallback`), the parameters that were not given and the
   catalogs that did not load.
 
 ## Texts of the help of the fields
-The native plugins add to the keys of their fields (`field.<key>`, `help.<key>`) a hint `hint.<key>` and an explanation
+The native UI plugins add to the keys of their fields (`field.<key>`, `help.<key>`) a hint `hint.<key>` and an explanation
 `info.<key>`, in English, French and German; the generator of the catalogs (`npm run catalogs:generate`) takes them from
 `scripts/native-texts.ts`. The help of a field shows the hint under the control, or the help of Versatile Thermostat without it, and
 the explanation in its panel, or the help of Versatile Thermostat when it is another text than the hint. A plugin gives its own texts

@@ -1,7 +1,7 @@
-# Native plugins
-Audience: plugin authors.
+# Native UI plugins
+Audience: plugin authors. The terms are defined in the [terminology](plugin-development.md#terminology).
 
-The dashboard itself is made of 16 native plugins, registered by Python like any other plugin. A plugin of yours can place its
+The dashboard itself is made of 16 native UI plugins, registered by Python like any other UI plugin. They are UI plugins only: they are not add-ons and not separate packages. A UI plugin of yours can place its
 tabs, replace one of theirs or remove it, with the identifiers of this page. See [Hooks and placement](hooks-and-placement.md).
 
 - `core`: the top tabs, the pages Overview, Plugins and Development, the overview of a thermostat, and the sections Main attributes,
@@ -250,7 +250,7 @@ contract of the SDK (`definitionOf` turns a field of the flow into a `FieldDefin
 a thermostat on switch and the services of the central boiler use `ha-service-picker`. The units of the delays and the classes of
 devices of the sensors are written by hand in `shared/vtherm-config-schemas.json` (`unit`, `device_classes`); the drift test keeps
 them. When a component is not defined after `ensureHaControls()`, the tab draws plain HTML controls, the fallback, and writes one
-warning in the console. Do the same in your plugin: see [Developing a plugin](plugin-development.md#fields-of-configuration).
+warning in the console. Do the same in your UI plugin: see [Developing a UI plugin](plugin-development.md#fields-of-configuration).
 
 ## Texts
 Each native plugin has English, French and German catalogs, generated from the translations of Versatile Thermostat with

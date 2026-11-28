@@ -1,6 +1,6 @@
-# Testing a plugin
+# Testing a UI plugin
 
-`@vtherm/dashboard-sdk/testing` is a fake dashboard. It lets you test a plugin without Home Assistant and without a browser
+`@vtherm/dashboard-sdk/testing` is a fake dashboard. It lets you test a UI plugin without Home Assistant and without a browser
 that runs the dashboard. Audience: plugin authors.
 
 The fake dashboard uses the same code as the dashboard for the validation of a definition and for the resolution of the positions.
@@ -44,7 +44,7 @@ test of [Read the entities of a thermostat](plugin-development.md#read-the-entit
 
 ## Example
 
-This test registers stand-ins for the native plugins, then the plugin of the page [Hooks and placement](hooks-and-placement.md).
+This test registers stand-ins for the native UI plugins, then the UI plugin of the page [Hooks and placement](hooks-and-placement.md).
 It checks the positions, the visibility condition and the properties of a rendered component.
 
 <!-- example: docs/examples/typescript/plugin-test.test.ts -->

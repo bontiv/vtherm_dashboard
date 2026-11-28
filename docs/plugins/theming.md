@@ -1,7 +1,9 @@
 # Theming
 
+Audience: plugin authors. The terms are defined in the [terminology](plugin-development.md#terminology).
+
 The dashboard looks like the Home Assistant theme of the user: it has no color of its own, and it follows a change of theme
-without reloading. A plugin should do the same. Audience: plugin authors.
+without reloading. A plugin should do the same.
 
 ## Use the variables of the theme
 

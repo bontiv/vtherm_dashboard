@@ -89,7 +89,7 @@ entry. The route is the address: `/vtherm/<tab>/<thermostat>/<entry>/...`, see `
 The dashboard is made of plugins, like any other. `core` gives the top tabs, the pages Overview, Plugins and Development and the
 sections Main attributes, Features and Underlyings. Each other section of the config flow is a plugin (`core_tpi`, ...), and
 `core_complements` gives the tab of add-ons. Their tabs are placed with `after` one another, so the order of the menu of the flow
-comes from the placement engine and a third-party plugin can insert a tab anywhere. See [Native plugins](../plugins/native-plugins.md).
+comes from the placement engine and a third-party plugin can insert a tab anywhere. See [Native UI plugins](../plugins/native-plugins.md).
 
 ### Configuration and its draft
 A native tab never writes. It reads `values` and proposes changes to the **draft** (`config/draft.ts`) of the thermostat or of the

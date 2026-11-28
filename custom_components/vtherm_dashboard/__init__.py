@@ -14,7 +14,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryError
 from homeassistant.loader import async_get_integration
 
-from .compat import create_restart_issue, delete_restart_issue, is_vtherm_api_compatible, running_vtherm_api_version
+from .compat import async_running_vtherm_api_version, create_restart_issue, delete_restart_issue, is_vtherm_api_compatible
 from .const import DATA_DEV_SERVER, DOMAIN, MIN_VTHERM_API_VERSION
 
 _LOGGER = logging.getLogger(__name__)
@@ -22,7 +22,7 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  # pylint: disable=unused-argument
     """Set up the dashboard from its configuration entry."""
-    running_version = running_vtherm_api_version()
+    running_version = await async_running_vtherm_api_version(hass)
     if not is_vtherm_api_compatible(running_version):
         _LOGGER.error(
             "The dashboard needs vtherm_api %s or later but %s is running. Restart Home Assistant to load the new version",
@@ -59,7 +59,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  
     """Unload the dashboard."""
     hass.data.get(DOMAIN, {}).pop("catalog", None)
     hass.data.get(DOMAIN, {}).pop(DATA_DEV_SERVER, None)
-    if not is_vtherm_api_compatible(running_vtherm_api_version()):
+    if not is_vtherm_api_compatible(await async_running_vtherm_api_version(hass)):
         return True  # The setup stopped before registering anything.
     # pylint: disable=import-outside-toplevel  # these modules import vtherm_api, see the docstring of the module
     from .api_keepalive import unregister_api_keepalive

@@ -16,12 +16,23 @@ from .const import DOMAIN, ISSUE_RESTART_REQUIRED, MIN_VTHERM_API_VERSION
 from .version_constraints import VersionConstraintError, satisfies
 
 
-def running_vtherm_api_version() -> str | None:
-    """Return the installed version of `vtherm_api`, or None when it cannot be determined."""
+def _read_vtherm_api_version() -> str | None:
+    """Read the installed version of `vtherm_api`, or None when it cannot be determined.
+
+    This performs blocking filesystem access and must run in the executor, not in the event loop.
+    """
     try:
         return metadata.version("vtherm_api")
     except metadata.PackageNotFoundError:
         return None
+
+
+async def async_running_vtherm_api_version(hass: HomeAssistant) -> str | None:
+    """Return the installed version of `vtherm_api`, or None when it cannot be determined.
+
+    `importlib.metadata` scans the filesystem, so it is read in the executor to keep the event loop responsive.
+    """
+    return await hass.async_add_executor_job(_read_vtherm_api_version)
 
 
 def is_vtherm_api_compatible(version: str | None) -> bool:

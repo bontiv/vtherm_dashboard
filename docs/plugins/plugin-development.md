@@ -15,8 +15,8 @@ The word "plugin" alone is ambiguous, so these pages use three terms:
 - A **plugin package** is the project that you write and publish: a Home Assistant integration (Python) and a TypeScript project, in one
   repository. The [sample plugin](../../examples/vtherm_sample_plugin/README.md) is a plugin package. The Python of the integration runs
   in Home Assistant and registers the UI plugin. The module built from the TypeScript runs in the browser and is the frontend of the UI plugin.
-- A **VTherm add-on** is an integration for Versatile Thermostat itself, listed in the [catalog](../user/complements.md). It is not a UI
-  plugin, although a plugin package can be installed as an add-on.
+- A **VTherm add-on** is any entry of the [catalog](../user/complements.md): an integration, a card, a theme, a blueprint or a Home
+  Assistant add-on for Versatile Thermostat. A UI plugin is not a VTherm add-on.
 
 The UI plugin of the guide does four things: it adds a section right after the TPI section of every thermostat, it replaces the section
 "Sync device internal temperature", it adds a widget to the overview of a thermostat, and it removes a widget that another plugin adds.
@@ -803,7 +803,7 @@ export default config;
 <!-- /example -->
 
 If a module does not load, **Configuration > Plugins** shows the address that was tried and the usual causes. See
-[Developing in the dashboard](dev-mode.md) for the limits, HTTPS and Safari.
+[Development mode](dev-mode.md) for the limits, HTTPS and Safari.
 
 ## 7. Test with the fake dashboard
 The SDK has a fake dashboard that registers plugins as the real one does, resolves the positions and renders the elements. You test

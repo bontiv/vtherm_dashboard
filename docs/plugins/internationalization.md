@@ -125,7 +125,7 @@ export default {
 - The compiler checks the keys: an unknown key in `t`, a key that is missing from a `CompleteCatalog`, and a key that is
   not in the English catalog all fail to compile.
 - In your tests, `assertCompleteTranslations` from `@vtherm/dashboard-sdk/testing` fails and names each missing or unknown key
-  of the languages that must be complete (see [Testing a plugin](testing.md)).
+  of the languages that must be complete (see [Testing a UI plugin](testing.md)).
 - At run time, `translations.warnings` lists the keys that were not found (`missing_key`), the keys that were shown in English although the language of the user has a catalog (`fallback`), the parameters that were not given and the
   catalogs that did not load.
 

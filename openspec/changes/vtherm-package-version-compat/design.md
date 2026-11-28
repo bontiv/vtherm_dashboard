@@ -171,6 +171,14 @@ checkout bump that forgets the constant fails in the test suite.
 **A user on 11.x stays read-only after this change** → Stated in the proposal. Mitigation: none inside this
 change; the deferred schema refresh is the fix, and until then the message is accurate about why.
 
+**The added scenario names the `2.4` pair as a literal** → The scenario "Version de configuration déclarée"
+asserts the declared configuration version against `2.4` / minor `5`, which is the pinned checkout rather
+than the rule. It becomes historical once `vtherm-11-schema-refresh` moves the pin to `2.5`. Accepted rather
+than fixed: the scenario lives only in this unarchived delta, so the refresh cannot `MODIFY` it, and
+rewording it now would describe a state no checkout in this project produces. The rule itself — major `2`,
+package major equal to `SUPPORTED_VTHERM_MAJOR` — is version-agnostic and needs no edit for the refresh. The
+proposal's "Dependency on the schema refresh" section records this for the second change.
+
 **Four handlers stop being `@callback`** → Any test that calls them synchronously must await them.
 Mitigation: the handlers are thin; update the affected tests in the same change and keep the payload shape
 unchanged otherwise.

@@ -74,3 +74,23 @@ read-only, because its package major is not `10`. The lock is aligned on the ver
 embedded schema actually describes (`external-refs.txt` pins `10.6.4`, configuration `2.4`), which is the
 honest statement of what this dashboard can verify, but it means the initial symptom is only removed by the
 second change.
+
+## Dependency on the schema refresh
+
+The deferred work is captured in the change `vtherm-11-schema-refresh`, which depends on this one: it moves
+`SUPPORTED_VTHERM_MAJOR` from `10` to `11`, shrinks the `tpi` tab to the two surviving Auto-TPI fields,
+regenerates `shared/vtherm-config-schemas.json` against a `11.0.0` checkout and bumps `external-refs.txt`.
+
+Because this change declares the verified major as a hand-maintained constant, it is complete and usable on
+its own for `10.x` installations; the refresh is additive, not a correction. Two consequences are recorded
+here so the second change does not have to reopen this one:
+
+- The spec delta below adds a scenario **"Version de configuration déclarée"** whose expected values name
+  the configuration pair `2.4` and the minor version `5`. Those literals describe the pinned checkout at the
+  time of writing, not the rule. The refresh moves the declared configuration version to `2.5`, so the
+  scenario's example values become historical. The scenario is *not* reworded here: a `MODIFIED` delta can
+  only patch a requirement that already exists in `openspec/specs/`, and this scenario exists only in this
+  unarchived change. The refresh change records the accurate values in its own artifacts, and the archived
+  `core-config-management` spec keeps this scenario as the record of the `2.4` era.
+- The residual risk in `design.md` titled "Editing a 2.5 entry against a 2.4 schema" is resolved by the
+  refresh, not by any edit to this change.
